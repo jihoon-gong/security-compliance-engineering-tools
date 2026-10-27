@@ -12,6 +12,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Thi
 - **SSO profile discovery:** profiles are read from `~/.aws/config` (`[default]`, `[profile name]`) as well as `~/.aws/credentials`, so SSO setups without a credentials file no longer fail with "No AWS profiles found". `[sso-session ...]` sections are ignored, and `$AWS_CONFIG_FILE` / `$AWS_SHARED_CREDENTIALS_FILE` are honored
 - **ENI coverage:** SG associations are collected from every ENI. ENIs in unlisted VPCs, NAT gateway / VPC endpoint / GWLB endpoint ENIs, and ENIs of known EC2 instances were skipped before, which could report in-use SGs (e.g. on secondary ENIs) as unused
 - **Shared SGs across accounts:** ENI usage is no longer split by account. An SG owned by one account and used by an ENI in another (VPC sharing) is now reported as in use
+- **Profile names with dashes:** Steampipe connection names are now derived from profile names with characters other than lowercase letters, digits and `_` replaced by `_` (`lbox-system` → `aws_lbox_system`). Steampipe rejects connection names containing dashes or whitespace, so `steampipe service start` failed for any such profile. Two profiles that map to the same connection name abort the run
 - **`--skip-config` with profile filters:** accounts returned by an existing aggregator config but not selected (filtered out by `--profiles` / `--exclude-profiles`, or failed auth) are now dropped instead of collected
 
 ### Added
